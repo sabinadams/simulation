@@ -1,0 +1,17 @@
+{
+  "name": "simulation",
+  "version": "1.0.0",
+  "description": "Simulation of swarm-search algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "author": "Monk",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.1",
+    "http": "0.0.0",
+    "random-number": "0.0.7",
+    "socket.io": "^1.7.2"
+  }
+}

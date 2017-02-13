@@ -1,0 +1,84 @@
+<div class="" style="text-align:center;">
+	<h2>Swarm-Search Simulator</h2>
+	
+	<!-- Simulation Output -->
+	<canvas id="ctx" width="500" height="500" style="border:1px solid #000000"></canvas>
+
+	<br>
+
+	<!-- Menu -->
+	<button onclick="demo()">Start Demo Simulation</button>
+</div>
+
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.js"
+  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+  crossorigin="anonymous"></script>
+<script>
+	var ctx = $("#ctx")[0].getContext('2d');
+	ctx.font = "20px Arial";
+	var socket = io();
+	var center = { 'x': 500,'y': 500};
+	var resources = [];
+	var bots = [];
+
+	//Generates home square
+    ctx.beginPath();
+    ctx.lineWidth="2";
+    ctx.strokeStyle="blue";
+    ctx.rect(225,225,50,50);
+    ctx.stroke();
+
+
+
+    //Places a bots when they are initiated
+	socket.on('initiate', (data) => {
+		ctx.fillStyle = ""
+		ctx.fillText(data.name, data.x, data.y);
+		bots.push(data);
+		console.log(data);
+	});
+
+	//Places resources as they are created (20 resources)
+	socket.on('newResource', (data) => {
+		resources.push(data);
+		ctx.fillRect(data.x,data.y,4,4);
+		console.log(resources);
+	});
+
+	//Starts the demo simulation
+	function demo(){
+		socket.emit('demo');
+	}
+
+	//Redraws the board
+	function redraw(){
+		ctx.clearRect(0, 0, 500, 500);
+		ctx.beginPath();
+		ctx.lineWidth="2";
+		ctx.strokeStyle="blue";
+		ctx.rect(225,225,50,50);
+		ctx.stroke();
+		for(let bot of bots){
+			ctx.fillText(bot.name, bot.x, bot.y);
+		}
+		for(let resource of resources){
+			ctx.fillRect(resource.x,resource.y,4,4);
+		}
+	}
+
+	//Test of removing a resource and re-drawing the board
+	socket.on('test', (data) => {
+		resources.splice(0,1);
+		if(resources.length < 1){
+			socket.emit('endsimulation');
+			redraw();
+			alert('All resources collected.');
+		} else {
+			console.log("Resource removed");
+			redraw();
+		}
+		
+	});
+</script>
