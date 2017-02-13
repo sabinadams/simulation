@@ -1,6 +1,10 @@
 <div class="" style="text-align:center;">
 	<h2>Swarm-Search Simulator</h2>
-	
+	<div class="counters" style="height:200px; width:200px; float:left; position:fixed;">
+		<p>Resources Collected: <span id="collected"></span></p>
+		<p>Resources Remaining: <span id="remaining"></span></p>
+	</div>
+
 	<!-- Simulation Output -->
 	<canvas id="ctx" width="500" height="500" style="border:1px solid #000000"></canvas>
 
@@ -17,6 +21,8 @@
   crossorigin="anonymous"></script>
 <script>
 	var ctx = $("#ctx")[0].getContext('2d');
+	var collected = $("#collected");
+	var remaining = $("#remaining");
 	ctx.font = "20px Arial";
 	var socket = io();
 	var center = { 'x': 500,'y': 500};
@@ -45,6 +51,8 @@
 		resources.push(data);
 		ctx.fillRect(data.x,data.y,4,4);
 		console.log(resources);
+		collected.text(20-resources.length);
+		remaining.text(20 - (20-resources.length));
 	});
 
 	//Starts the demo simulation
@@ -66,6 +74,8 @@
 		for(let resource of resources){
 			ctx.fillRect(resource.x,resource.y,4,4);
 		}
+		collected.text(20-resources.length);
+		remaining.text(20 - (20-resources.length));
 	}
 
 	//Test of removing a resource and re-drawing the board

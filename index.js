@@ -31,7 +31,10 @@ io.sockets.on('connection', (socket) => {
 		resources.push({x:x, y:y, index:i});
 	}
 
+
+	//Ends the simulation
 	socket.on('endsimulation', () => {simulating = false});
+
 	//Demo Simulation that removes a resource every 3 seconds and redraws the canvas
 	socket.on('demo', () => {
 		simulating = true;
