@@ -80,14 +80,25 @@
 
 	//Test of removing a resource and re-drawing the board
 	socket.on('test', (data) => {
-		resources.splice(0,1);
-		if(resources.length < 1){
-			socket.emit('endsimulation');
-			redraw();
-			alert('All resources collected.');
-		} else {
-			console.log("Resource removed");
-			redraw();
+		// resources.splice(0,1);
+		// if(resources.length < 1){
+		// 	socket.emit('endsimulation');
+		// 	redraw();
+		// 	alert('All resources collected.');
+		// } else {
+		// 	console.log("Resource removed");
+		// 	redraw();
+		// }
+
+		for(let bot of bots){
+			bot.x += 5;
+			bot.y += 5;
+			for(let resource of resources){
+				if((bot.x > resource.x - 5 && bot.x < resource.x + 5 )&& (bot.y > resource.y - 5 && bot.y < resource.y + 5 ) ){
+					resources.splice(resource, 1);
+					redraw();
+				}
+			}
 		}
 		
 	});

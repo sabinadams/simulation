@@ -9,12 +9,14 @@ imports.app.get('/', (req, res) => {
 
 imports.app.use('/client', imports.express.static(__dirname + '/client'));
 
+
 imports.serv.listen(2000);
 console.log('Server listening on port 2000.');
 
 var io = require('socket.io')(imports.serv, {});
 io.sockets.on('connection', (socket) => {
 	
+
 	//Initiates 6 bots
 	for(i = 0; i < 6; i++){
 		let location = imports.initialXY[i];
@@ -41,7 +43,7 @@ io.sockets.on('connection', (socket) => {
 		var simulation = setInterval(() => {
 			if(simulating) socket.emit('test');
 			else clearInterval(simulation);
-		}, 3000);
+		}, 1000);
 	});
 	
 });
